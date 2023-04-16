@@ -102,7 +102,7 @@ class SimpleSearchForm(forms.Form):
 
 class ProjectAddUserForm(forms.ModelForm):
     def __init__(self, project_id, *args, **kwargs):
-        super().__init__( *args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.project = Project.objects.get(pk=project_id)
         user_pk_list = []
         for user in self.project.user.all():

@@ -48,6 +48,3 @@ class TaskDetailUpdateDeleteView(APIView):
         object = self.get_object(pk=kwargs.get('pk'))
         object.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-
