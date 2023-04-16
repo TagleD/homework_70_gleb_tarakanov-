@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}Просмотр задач{% endblock %}
+
+{% block add_task %}
+    {% if perms.webapp.add_task %}
+        <li class="nav-item">
+            <a class="nav-link active white" aria-current="page" href="{% url 'add_view' %}">Добавить
+                задачу
+            </a>
+        </li>
+    {% endif %}
+{% endblock %}
+
+{% block search %}{% include 'partial/search.html' %}{% endblock %}
+
+{% block content %}
+    <div class="container main-container">
+        <div class="row">
+            <div class="col">
+                <h1 class="project-task-name-left">
+                    Список задач
+                </h1>
+            </div>
+        </div>
+        <div class="row">
+            {% if tasks %}
+                {% for task in tasks %}
+
+                    <div class="col-4 padding-left-tasks task-top">
+                        <div class="row">
+                            <div class="col-12">
+                                <h4 class="title-card-height"><b>{{ task.title|truncatechars:33 }}</b></h4>
+                            </div>
+                            <div class="col-12">
+                                <p class="description-height">{{ task.description|truncatechars:101 }}</p>
+                            </div>
+                            <div class="col-12">
+                                <p><b>{{ task.status }}</b></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                <p><a class="btn btn-primary more-button" href="{% url 'detail_view' task.pk %}">Подробнее</a>
+                                </p>
+                            </div>
+                            {% if user.is_authenticated %}
+                                {% if perms.webapp.delete_task %}
+                                    <div class="col-4">
+                                        <a href="{% url 'task_delete' task.pk %}" class='btn btn-danger'>Удалить</a>
+                                    </div>
+                                {% endif %}
+                                {% if perms.webapp.change_task %}
+                                    {% if not perms.webapp.delete_task %}
+                                        <div class="col-3">
+                                            <a style="margin-left: 2px;" href="{% url 'task_update' task.pk %}"
+                                               class='btn btn-success edit-button'>Изменить
+                                            </a>
+                                        </div>
+                                    {% else %}
+                                        <div class="col-3">
+                                            <a href="{% url 'task_update' task.pk %}"
+                                               class='btn btn-success edit-button'>Изменить
+                                            </a>
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-6">
+                    <h5>По вашему запросы задачи не найдены</h5>
+                </div>
+            {% endif %}
+        </div>
+        {% if is_paginated %}
+            {% include 'partial/pagination.html' %}
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Создание проекта{% endblock %}
+
+{% block add_task %}
+{% endblock %}
+
+{% block project_menu %}
+    {% if perms.webapp.add_project %}
+        <li class="nav-item">
+            <a class="nav-link active white" aria-current="page" href="{% url 'project_create' %}">
+                Создать проект
+            </a>
+        </li>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="container main-container">
+        <div class="row d-flex justify-content-center">
+            <div class="col-5 card text-bg-light form-margins">
+                <h3>Создание проекта</h3>
+                <form action="{% url 'project_create' %}" method="post">
+                    {% include 'partial/add_update_form.html' with button_text='Создать' %}
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

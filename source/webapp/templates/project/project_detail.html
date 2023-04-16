@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block title %}Задачи проекта {{ project.name }}{% endblock %}
+
+{% block add_task %}
+{% endblock %}
+
+{% block project_menu %}
+    {% if perms.webapp.add_project %}
+        <li class="nav-item">
+            <a class="nav-link active white" aria-current="page" href="{% url 'project_create' %}">
+                Создать проект
+            </a>
+        </li>
+    {% endif %}
+    {% if perms.webapp.add_task %}
+        <li class="nav-item">
+            <a class="nav-link active white" aria-current="page" href="{% url 'project_add_task' project.pk %}">
+                Создать задачу для проекта
+            </a>
+        </li>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="container main-container">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="project-task-name-left">
+                    Задачи проекта {{ project.name }}
+                </h1>
+            </div>
+            <div class="col-12">
+                <p class="project-description">{{ project.description }}</p>
+            </div>
+        </div>
+        <div class="row">
+            {% for task in tasks %}
+
+                <div class="col-4 padding-left-tasks task-top">
+                    <div class="row">
+                        <div class="col-12">
+                            <h4 class="title-card-height"><b>{{ task.title|truncatechars:33 }}</b></h4>
+                        </div>
+                        <div class="col-12">
+                            <p class="description-height">{{ task.description|truncatechars:101 }}</p>
+                        </div>
+                        <div class="col-12">
+                            <p><b>{{ task.status }}</b></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <p><a class="btn btn-primary more-button"
+                                  href="{% url 'detail_view' task.pk %}">Подробнее</a></p>
+                        </div>
+                        {% if user.is_authenticated %}
+                            {% if perms.webapp.delete_task %}
+                                <div class="col-4">
+                                    <a href="{% url 'task_delete' task.pk %}" class='btn btn-danger'>Удалить</a>
+                                </div>
+                            {% endif %}
+                            {% if perms.webapp.change_task %}
+                                {% if not perms.webapp.delete_task %}
+                                    <div class="col-3">
+                                        <a style="margin-left: 2px;" href="{% url 'task_update' task.pk %}"
+                                           class='btn btn-success edit-button'>Изменить
+                                        </a>
+                                    </div>
+                                {% else %}
+                                    <div class="col-3">
+                                        <a href="{% url 'task_update' task.pk %}"
+                                           class='btn btn-success edit-button'>Изменить
+                                        </a>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="row">
+            <div class="col-4 project-users">
+                <h3>Пользователи проекта</h3>
+                <ul class="list-group users-list">
+                    {% for user in project.user.all %}
+                        <li class="list-group-item bg-light text-dark">{{ user.username }}</li>
+                        {% empty %}
+                        <li class="list-group-item bg-light text-dark">Нет пользователей</li>
+                    {% endfor %}
+                </ul>
+                {% if user.is_authenticated %}
+                    <div class="row project-users-btns">
+                        {% if perms.webapp.add_user_project %}
+                            <div class="col-4">
+                                <a href="{% url 'project_add_user' project.pk %}" class='btn btn-success'>Добавить</a>
+                            </div>
+                        {% endif %}
+                        {% if perms.webapp.delete_user_project %}
+                            <div class="col-3">
+                                <form action="{% url 'project_delete_user' project.pk %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class='btn btn-danger project-user-delete-btn'>Удалить
+                                    </button>
+                                </form>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

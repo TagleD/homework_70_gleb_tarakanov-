@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Добавление задачи{% endblock %}
+
+{% block content %}
+    <div class="container main-container">
+        <div class="row d-flex justify-content-center">
+            <div class="col-5 card text-bg-light form-margins">
+                <h3>Добавление задачи</h3>
+                <form action="{% url 'add_view' %}" method="post">
+                    {% include 'partial/add_update_form.html' with button_text='Создать' %}
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

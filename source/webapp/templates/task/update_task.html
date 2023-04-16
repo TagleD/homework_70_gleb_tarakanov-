@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Редактирование задачи{% endblock %}
+
+{% block add_task %}
+    {% if perms.webapp.add_task %}
+        <li class="nav-item">
+            <a class="nav-link active white" aria-current="page" href="{% url 'add_view' %}">Добавить
+                задачу
+            </a>
+        </li>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="container main-container">
+        <div class="row d-flex justify-content-center">
+            <div class="col-5 card text-bg-light form-margins">
+                <h3>Редактирование задачи</h3>
+                <form action="{% url 'task_update' task.pk %}" method="post">
+                    {% include 'partial/add_update_form.html' with button_text='Редактировать' %}
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

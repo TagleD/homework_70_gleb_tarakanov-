@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <img class="main-image" src="{% static 'images/laptop.jpg' %}" alt="Работа за ноутбуком">
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h2 class="center-title">Измените свою жизнь с TODO-list!</h2>
+            </div>
+            <div class="row d-flex justify-content-center">
+                <div class="col-2 end-page-margin">
+                    <a href="{% url 'tasks_view' %}" class="btn btn-success start">Начать</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
