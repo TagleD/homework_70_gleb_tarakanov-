@@ -50,7 +50,7 @@ class TaskDetailUpdateDeleteView(APIView):
     def delete(self, request, *args, **kwargs):
         object = self.get_object(pk=kwargs.get('pk'))
         object.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response({'id': kwargs.get('pk')}, status=status.HTTP_204_NO_CONTENT)
 
 
 # Представления для проектов
