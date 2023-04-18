@@ -10,7 +10,7 @@ class Task(models.Model):
         max_length=50,
         null=False,
         blank=False,
-        verbose_name="Заголовок"
+        verbose_name="Заголовок",
     )
     description = models.TextField(
         max_length=3000,
@@ -32,7 +32,7 @@ class Task(models.Model):
     project = models.ForeignKey(
         'webapp.Project',
         related_name='projects',
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
         verbose_name='Проект',
         default=1
     )
