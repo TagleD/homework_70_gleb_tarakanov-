@@ -54,13 +54,6 @@ class TaskDetailUpdateDeleteView(APIView):
 
 
 # Представления для проектов
-class ProjectListView(APIView):
-    def get(self, request, *args, **kwargs):
-        project = Project.objects.get(pk=kwargs.get('pk'))
-        serializer = ProjectSerializer(project)
-        return Response(serializer.data, status=200)
-
-
 class ProjectDetailUpdateDeleteView(APIView):
     def get_object(self, pk):
         try:
